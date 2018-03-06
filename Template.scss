@@ -1,74 +1,82 @@
 // ---------------------------------------------------------------------------------------------------------------------
 // Anki-Cards | Copyright (C) 2018 eth-p
 // ---------------------------------------------------------------------------------------------------------------------
-// Global:
+// Config:
 
 $header-height: 25px;
 
-.card {
-	font-family: "Roboto", "Arial", sans-serif;
+// ---------------------------------------------------------------------------------------------------------------------
+// Global:
 
-	header {
-		// Position
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		height: $header-height;
+$imported-template: false !default;
+@if ($imported-template == false) {
+	$imported-template: true;
 
-		// Font
-		font-size: 15px;
+	.card {
+		font-family: "Roboto", "Arial", sans-serif;
 
-		// Components
-		layout-column {
-			box-sizing: border-box;
-			padding: 3px;
+		header {
+			// Position
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			height: $header-height;
+
+			// Font
+			font-size: 15px;
+
+			// Components
+			layout-column {
+				box-sizing: border-box;
+				padding: 3px;
+			}
+
+			// Color
+			color: #fff;
+			background: #000;
 		}
 
-		// Color
-		color: #fff;
-		background: #000;
-	}
+		main {
+			display: block;
+			margin-top: $header-height + 18px;
 
-	main {
-		display: block;
-		margin-top: $header-height + 18px;
-
-		// Font
-		font-size: 20px;
-	}
-
-	layout-columns {
-		// Alignment
-		> layout-column:first-child {
-			text-align: left;
+			// Font
+			font-size: 20px;
 		}
 
-		> layout-column:last-child {
-			text-align: right;
+		layout-columns {
+			// Alignment
+			> layout-column:first-child {
+				text-align: left;
+			}
+
+			> layout-column:last-child {
+				text-align: right;
+			}
+
+			// Alignment - Table
+			display: table;
+			width: 100%;
+
+			> layout-column {
+				display: table-cell;
+				text-align: center;
+			}
+
+			// Alignment - Flex (Unsupported on the Qt Anki App)
+			@supports (display: flex) {
+				display: flex;
+				flex-direction: row;
+				justify-content: space-between;
+			}
 		}
 
-		// Alignment - Table
-		display: table;
-		width: 100%;
-
-		> layout-column {
-			display: table-cell;
-			text-align: center;
+		ac-question,
+		ac-answer,
+		ac-placeholder {
+			display: inline;
 		}
-
-		// Alignment - Flex (Unsupported on the Qt Anki App)
-		@supports (display: flex) {
-			display: flex;
-			flex-direction: row;
-			justify-content: space-between;
-		}
-	}
-
-	ac-question,
-	ac-answer,
-	ac-placeholder {
-		display: inline;
 	}
 }
 
