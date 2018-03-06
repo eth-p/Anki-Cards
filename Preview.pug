@@ -5,44 +5,43 @@ html
 	head
 		style
 			include Style.css
-		style
-			|
-			| /* Preview Styles */
-			| body {
-			|     width: 735px;
-			|     height: 650px;
-			|     padding: 20px;
-			| }
-			|
-			| div#front,
-			| div#back {
-			|     box-sizing: border-box;
-			|     position: absolute;
-			|     top: 5px;
-			|     bottom: 5px;
-			|     width: 360px;
-			|     height: 640px;
-			|
-			|     border: #000 1px solid;
-			|     padding: 20px;
-			|     padding-top: 0;
-			|
-			|     background: #fff;
-			|     box-shadow: rgba(0, 0, 0, 0.3) 1px 1px 2px;
-			| }
-			|
-			| div#front {
-			|     left: 5px;
-			| }
-			|
-			| div#back {
-			|     left: 370px
-			| }
-			|
-			| div.offset {
-			|     margin-top: -5px;
-			| }
-			|
+
+		style.
+			/* Preview Styles */
+			body {
+				width: 735px;
+				height: 650px;
+				padding: 20px;
+			}
+
+			div#front,
+			div#back {
+				box-sizing: border-box;
+				position: absolute;
+				top: 5px;
+				bottom: 5px;
+				width: 360px;
+				height: 640px;
+
+				border: #000 1px solid;
+				padding: 20px;
+				padding-top: 0;
+
+				background: #fff;
+				box-shadow: rgba(0, 0, 0, 0.3) 1px 1px 2px;
+			}
+
+			div#front {
+				left: 5px;
+			}
+
+			div#back {
+				left: 370px
+			}
+
+			div.offset {
+				margin-top: -5px;
+			}
 
 	body
 		div#front

@@ -1,10 +1,25 @@
 //- --------------------------------------------------------------------------------------------------------------------
 //- Anki-Cards | Copyright (C) 2018 eth-p
 //- --------------------------------------------------------------------------------------------------------------------
-mixin Card
+
+- function field(name) {
+-     return `{{${name}}}`;
+- }
+
+mixin if-field-exists(field)
+	= `\n{{#${field}}}\n`
+	block
+	= `\n{{/${field}}}\n`
+
+mixin if-field-empty(field)
+	= `\n{{^${field}}}\n`
+	block
+	= `\n{{/${field}}}\n`
+
+mixin card
 	header
 		layout-columns
-			layout-column.deck {{Deck}}
-			layout-column.type {{Type}}
+			layout-column.deck= field('Deck')
+			layout-column.type= field('Type')
 	main
 		block

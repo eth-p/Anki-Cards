@@ -2,10 +2,10 @@
 //- Anki-Cards | Copyright (C) 2018 eth-p
 //- --------------------------------------------------------------------------------------------------------------------
 include ../Template
-+Card
++card
 	p
 		ac-question
-			span.term {{Term}}
+			span.term= field('Term')
 			span &nbsp;is&nbsp;
 		ac-answer
 			ac-placeholder
