@@ -5,9 +5,16 @@
 
 /**
  * Force all platforms to use a specific style.
- * Use 'varied' to allow per-platform styles.
+ * Use false to allow per-platform styles.
  */
-$platform: 'varied';
+$platform-override: false;
+
+$platform-android: 'enable';
+$platform-macos: 'enable';
+$platform-windows: 'enable';
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Theme:
 
 $header-padding: 3px;
 $header-height: 25px;
@@ -114,12 +121,12 @@ $imported-template: false !default;
 // Template: Android
 
 @mixin template-android {
-	@if ($platform == 'varied') {
-		.android .card {
+	@if ($platform-override == 'android') {
+		.card {
 			@content;
 		}
-	} @else if ($platform == 'android') {
-		.card {
+	} @else if (($platform-override == false) and ($platform-android != 'disable')) {
+		.android .card {
 			@content;
 		}
 	}
@@ -129,12 +136,12 @@ $imported-template: false !default;
 // Template: Mac OS
 
 @mixin template-macos {
-	@if ($platform == 'varied') {
-		.mac .card {
+	@if ($platform-override == 'macos') {
+		.card {
 			@content;
 		}
-	} @else if ($platform == 'macos') {
-		.card {
+	} @else if (($platform-override == false) and ($platform-macos != 'disable')) {
+		.mac .card {
 			@content;
 		}
 	}
@@ -144,12 +151,12 @@ $imported-template: false !default;
 // Template: Windows
 
 @mixin template-windows {
-	@if ($platform == 'varied') {
-		.win .card {
+	@if ($platform-override == 'windows') {
+		.card {
 			@content;
 		}
-	} @else if ($platform == 'windows') {
-		.card {
+	} @else if (($platform-override == false) and ($platform-windows != 'disable')) {
+		.win .card {
 			@content;
 		}
 	}
