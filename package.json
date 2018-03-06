@@ -1,0 +1,27 @@
+{
+	"name": "anki-cards",
+	"version": "1.0.0",
+	"description": "A collection of custom-designed Anki flashcards.",
+	"private": true,
+	"author": "eth-p",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/eth-p/Anki-Cards.git"
+	},
+	"devDependencies": {
+		"fs-extra": "^5.0.0",
+		"gulp": "^4.0.0",
+		"gulp-debug": "^3.2.0",
+		"gulp-file": "^0.4.0",
+		"gulp-noop": "^1.0.0",
+		"gulp-pug": "^3.3.0",
+		"gulp-sass": "^3.1.0",
+		"gulp-webshot": "^0.2.3",
+		"stream-to-promise": "^2.2.0"
+	},
+	"scripts": {
+		"build": "gulp default",
+		"watch": "gulp --watch --continue"
+	},
+	"license": "MIT"
+}
