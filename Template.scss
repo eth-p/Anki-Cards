@@ -24,6 +24,10 @@ $header-height: 25px;
 			box-sizing: border-box;
 			padding: 3px;
 		}
+
+		// Color
+		color: #fff;
+		background: #000;
 	}
 
 	main {
@@ -82,11 +86,6 @@ $header-height: 25px;
 
 @mixin template-global {
 	.card {
-		header {
-			color: #fff;
-			background: #000;
-		}
-
 		@content;
 	}
 }
@@ -96,12 +95,24 @@ $header-height: 25px;
 
 @mixin template-android {
 	.android .card {
-		header {
-			//background: $material-primary-500;
-			//color: $material-primary-900;
+		@content;
+	}
+}
 
-		}
+// ---------------------------------------------------------------------------------------------------------------------
+// Template: Mac OS
 
+@mixin template-macos {
+	.mac .card {
+		@content;
+	}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Template: Windows
+
+@mixin template-windows {
+	.win .card {
 		@content;
 	}
 }
