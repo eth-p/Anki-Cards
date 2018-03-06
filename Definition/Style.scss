@@ -6,15 +6,23 @@
 // ---------------------------------------------------------------------------------------------------------------------
 // Theme:
 
-$theme: #9C27B0;
-$term: $theme;
+$primary: material(#9C27B0);
+
+$term-color: map-get($primary, 500);
+$header-color: map-get($primary, 500);
+$header-text: map-get($primary, text);
 
 // ---------------------------------------------------------------------------------------------------------------------
 // Global:
 
 @include template-global() {
+	@include card-header() {
+		background: $header-color;
+		color: $header-text;
+	}
+
 	ac-question > .term {
-		color: $term;
+		color: $term-color;
 	}
 
 	ac-answer > ac-placeholder::after {
