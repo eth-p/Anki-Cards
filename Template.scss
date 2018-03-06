@@ -9,12 +9,19 @@
  */
 $platform-override: false;
 
-$platform-android: 'enable';
-$platform-macos: 'enable';
-$platform-windows: 'enable';
+/**
+ * Enable or disable specific platform styles.
+ */
+$platform-enabled: (
+		android: true,
+		macos: true,
+		windows: true
+);
 
 // ---------------------------------------------------------------------------------------------------------------------
 // Theme:
+
+@import "Theme.scss";
 
 $header-padding: 3px;
 $header-height: 25px;
@@ -100,7 +107,32 @@ $imported-template: false !default;
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-// Template: Header
+// Function: Platform
+
+/**
+ * Internal function for implementing platform-specific styles.
+ * @param $name The name of the platform.
+ * @param $selector The selector for the platform.
+ * @internal
+ */
+@mixin --template-platform($name, $selector) {
+	@if (map-get($platform-enabled, $name) == true) {
+		@if ($platform-override != false) {
+			@if ($platform-override == $name) {
+				.card {
+					@content;
+				}
+			}
+		} @else {
+			#{$selector} .card {
+				@content;
+			}
+		}
+	}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Function: Header
 
 @mixin card-header {
 	header {
@@ -120,44 +152,56 @@ $imported-template: false !default;
 // ---------------------------------------------------------------------------------------------------------------------
 // Template: Android
 
-@mixin template-android {
-	@if ($platform-override == 'android') {
-		.card {
-			@content;
-		}
-	} @else if (($platform-override == false) and ($platform-android != 'disable')) {
-		.android .card {
-			@content;
-		}
+@mixin template-android($defaults: true) {
+	@include --template-platform('android', '.android') {
+		@content;
 	}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
 // Template: Mac OS
 
-@mixin template-macos {
-	@if ($platform-override == 'macos') {
-		.card {
-			@content;
+@mixin template-macos($defaults: true) {
+	@include --template-platform('macos', '.mac') {
+		@if ($defaults == true) {
+			@include card-header() {
+				border-bottom: $apple-border 1px solid;
+				background: $apple-background;
+				color: $apple-text;
+
+				.deck {
+					margin-top: 1px;
+
+					color: $apple-text;
+				}
+
+				.type {
+					padding: 0;
+
+					& .field {
+						display: inline-block;
+
+						margin-top: 1px;
+						margin-right: 2px;
+						padding: ($header-padding) ($header-padding + 1) ($header-padding - 1) ($header-padding + 1);
+						border-radius: 6px;
+
+						background: $apple-border;
+						color: $apple-text;
+					}
+				}
+			}
 		}
-	} @else if (($platform-override == false) and ($platform-macos != 'disable')) {
-		.mac .card {
-			@content;
-		}
+
+		@content;
 	}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
 // Template: Windows
 
-@mixin template-windows {
-	@if ($platform-override == 'windows') {
-		.card {
-			@content;
-		}
-	} @else if (($platform-override == false) and ($platform-windows != 'disable')) {
-		.win .card {
-			@content;
-		}
+@mixin template-windows($defaults: true) {
+	@include --template-platform('windows', '.win') {
+		@content;
 	}
 }

@@ -32,7 +32,25 @@ $header-text: map-get($primary, text);
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-// Platform:
+// Platform: Android
 
-@import "./Platform-Android.scss";
-@import "./Platform-Mac.scss";
+@include template-android() {
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Platform: Mac OS
+
+@include template-macos() {
+	@include card-header() {
+		.type .field {
+			background: $header-color;
+			color: $header-text;
+		}
+	}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Platform: Windows
+
+@include template-windows() {
+}
