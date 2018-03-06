@@ -1,0 +1,38 @@
+// ---------------------------------------------------------------------------------------------------------------------
+// Anki-Cards | Copyright (C) 2018 eth-p
+// ---------------------------------------------------------------------------------------------------------------------
+@import "../Material.scss";
+@import "../Template.scss";
+@import "../Theme.scss";
+// ---------------------------------------------------------------------------------------------------------------------
+// Mac OS:
+
+@include template-macos() {
+	@include card-header() {
+		border-bottom: $apple-border 1px solid;
+		background: $apple-background;
+		color: $header-color;
+
+		.deck {
+			margin-top: 1px;
+
+			color: $apple-text;
+		}
+
+		.type {
+			padding: 0;
+
+			& > span {
+				display: inline-block;
+
+				margin-top: 1px;
+				margin-right: 2px;
+				padding: ($header-padding) ($header-padding + 1) ($header-padding - 1) ($header-padding + 1);
+				border-radius: 6px;
+
+				background: $header-color;
+				color: $header-text;
+			}
+		}
+	}
+}

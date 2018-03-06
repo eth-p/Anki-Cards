@@ -3,7 +3,11 @@
 // ---------------------------------------------------------------------------------------------------------------------
 // Config:
 
+$header-padding: 3px;
 $header-height: 25px;
+
+$card-text: #000;
+$card-background: #FFF;
 
 // ---------------------------------------------------------------------------------------------------------------------
 // Global:
@@ -12,8 +16,11 @@ $imported-template: false !default;
 @if ($imported-template == false) {
 	$imported-template: true;
 
+
 	.card {
 		font-family: "Roboto", "Arial", sans-serif;
+		color: $card-text;
+		background: $card-background;
 
 		header {
 			// Position
@@ -29,12 +36,12 @@ $imported-template: false !default;
 			// Components
 			layout-column {
 				box-sizing: border-box;
-				padding: 3px;
+				padding: $header-padding;
 			}
 
 			// Color
-			color: #fff;
-			background: #000;
+			color: $card-background;
+			background: $card-text;
 		}
 
 		main {

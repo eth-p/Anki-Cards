@@ -19,7 +19,9 @@ mixin if-field-empty(field)
 mixin card
 	header
 		layout-columns
-			layout-column.deck= field('Deck')
-			layout-column.type= field('Type')
+			layout-column.deck
+				span= field('Deck')
+			layout-column.type
+				span= field('Type')
 	main
 		block
