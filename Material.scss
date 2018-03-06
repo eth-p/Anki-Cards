@@ -1,0 +1,36 @@
+// ---------------------------------------------------------------------------------------------------------------------
+// Anki-Cards | Copyright (C) 2018 eth-p
+// Adapted from https://github.com/mbitson/mcg/pull/76/files#diff-374378cbfafac3af127c90d170ff0b2eR193
+// ---------------------------------------------------------------------------------------------------------------------
+// Material Design:
+
+/**
+ * Calculate a Material Design color palette from a base color.
+ *
+ * @param $base The base color.
+ *
+ * @returns The calculated palette as a key-value map.
+ */
+@function material($base) {
+	$r: red($base);
+	$g: green($base);
+	$b: blue($base);
+	$dark: rgb(floor($r * $r / 255), floor($g * $g / 255), floor($b * $b / 255));
+	$accent: $base;
+	@return (
+			50: mix($base, #ffffff, 12),
+			100: mix($base, #ffffff, 30),
+			200: mix($base, #ffffff, 50),
+			300: mix($base, #ffffff, 70),
+			400: mix($base, #ffffff, 85),
+			500: $base,
+			600: mix($base, $dark, 87),
+			700: mix($base, $dark, 70),
+			800: mix($base, $dark, 54),
+			900: mix($base, $dark, 25),
+			A100: lighten(saturate(mix($dark, $accent, 15), 80), 27),
+			A200: lighten(saturate(mix($dark, $accent, 15), 100), 15),
+			A400: lighten(saturate(mix($dark, $accent, 15), 100), 5),
+			A700: lighten(saturate(mix($dark, $accent, 15), 100), 0)
+	);
+}

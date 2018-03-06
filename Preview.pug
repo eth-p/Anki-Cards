@@ -1,0 +1,59 @@
+//- --------------------------------------------------------------------------------------------------------------------
+//- Anki-Cards | Copyright (C) 2018 eth-p
+//- --------------------------------------------------------------------------------------------------------------------
+html
+	head
+		style
+			include Style.css
+		style
+			|
+			| /* Preview Styles */
+			| body {
+			|     width: 735px;
+			|     height: 650px;
+			|     padding: 20px;
+			|     background: #fff;
+			| }
+			|
+			| div#front,
+			| div#back {
+			|     box-sizing: border-box;
+			|     position: absolute;
+			|     top: 5px;
+			|     bottom: 5px;
+			|     width: 360px;
+			|     height: 640px;
+			|
+			|     border: #000 1px solid;
+			|     padding: 20px;
+			|     padding-top: 0;
+			|
+			|     background: #fff;
+			| }
+			|
+			| div#front {
+			|     left: 5px;
+			| }
+			|
+			| div#back {
+			|     left: 370px
+			| }
+			|
+			| div.offset {
+			|     margin-top: -5px;
+			| }
+			|
+
+	body
+		div#front
+			div.offset
+				div.card
+					include Front.html
+
+		div#back
+			div.offset
+				div.card
+					include Back.html
+
+	script
+		| document.body.classList.add(window.location.hash.substring(1))
