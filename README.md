@@ -3,7 +3,8 @@ A collection of custom-designed Anki flashcards.
 
 |Type|Explanation|
 |:--|:--|
-|[Definition](Definition/About.md)|The definition of a term.|
+|[Definition](Definition/About.md)|The definition of a term. (Reversible)|
+|[Multiple Choice](Multiple%20Choice/About.md)|A multiple choice question.|
 
 
 ## Building

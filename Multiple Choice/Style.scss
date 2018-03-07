@@ -7,9 +7,10 @@
 // ---------------------------------------------------------------------------------------------------------------------
 // Theme:
 
-$primary: material(#03A9F4);
+$primary: material(#9C27B0);
+$correct: material(#8BC34A);
 
-$term-color: map-get($primary, 500);
+$answer-color: map-get($correct, 500);
 $header-color: map-get($primary, 500);
 $header-text: map-get($primary, text);
 
@@ -17,13 +18,22 @@ $header-text: map-get($primary, text);
 // Global:
 
 @include template-global($primary) {
-	.term {
-		color: $term-color;
-	}
-
 	ac-placeholder::after {
 		color: inherit;
 		content: '_____';
+	}
+
+	ac-question > ul {
+		list-style-type: upper-alpha;
+		padding-left: 40px;
+
+		> li {
+			padding-top: 3px;
+		}
+	}
+
+	ac-answer {
+		display: block;
 	}
 }
 
@@ -42,5 +52,5 @@ $header-text: map-get($primary, text);
 // ---------------------------------------------------------------------------------------------------------------------
 // Platform: Windows
 
-@include template-windows() {
+@include template-windows($primary) {
 }

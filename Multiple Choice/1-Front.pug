@@ -1,0 +1,35 @@
+//- --------------------------------------------------------------------------------------------------------------------
+//- Anki-Cards | Copyright (C) 2018 eth-p
+//- --------------------------------------------------------------------------------------------------------------------
+include ../Template
++card
+	ac-question
+		p
+			span.question= field('Question')
+
+	ac-question
+		ul
+			li.choice= field('Correct')
+			li.choice= field('Incorrect_1')
+
+			+if-field-exists('Incorrect_2')
+				li.choice= field('Incorrect_2')
+
+			+if-field-exists('Incorrect_3')
+				li.choice= field('Incorrect_3')
+
+			+if-field-exists('Incorrect_4')
+				li.choice= field('Incorrect_4')
+
+	script.
+		var answers = document.querySelectorAll(".card .choice");
+		var parent = answers[0].parentNode;
+		var length = answers.length;
+
+		var rand = function () {
+			return Math.floor(Math.random() * length);
+		};
+
+		for (var i = 0; i < answers.length; i++) {
+			parent.insertBefore(answers[rand()], answers[rand()]);
+		}
