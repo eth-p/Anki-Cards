@@ -1,0 +1,12 @@
+//- --------------------------------------------------------------------------------------------------------------------
+//- Anki-Cards | Copyright (C) 2018 eth-p
+//- --------------------------------------------------------------------------------------------------------------------
+include ../Template
++card
+	+if-field-exists('Question')
+		ac-question
+			div.paragraph= field('Question')
+
+	+if-field-empty('Question')
+		ac-answer
+			div.paragraph= field('Fact')

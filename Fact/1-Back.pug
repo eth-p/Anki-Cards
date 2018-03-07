@@ -1,0 +1,12 @@
+//- --------------------------------------------------------------------------------------------------------------------
+//- Anki-Cards | Copyright (C) 2018 eth-p
+//- --------------------------------------------------------------------------------------------------------------------
+include ../Template
++card
+	ac-answer
+		div.paragraph= field('Fact')
+
+		+if-field-exists('Explanation')
+			hr
+			h2 Explanation:
+			div.paragraph.explanation= field('Explanation')
