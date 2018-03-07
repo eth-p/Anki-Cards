@@ -1,5 +1,5 @@
-# Anki-Cards/Definition
-A flashcard for dictionary or terminology definitions.
+# Anki-Cards/Choice
+A flashcard for multiple choice answers.
 
 ## Fields
 
@@ -7,7 +7,7 @@ A flashcard for dictionary or terminology definitions.
 |:--|:--|
 |Question|The multiple choice question.|
 |Correct|The correct answer.|
-|Explanation|An additional explanation.|
+|Explanation|An additional explanation. (Optional)|
 |Incorrect_1|The first incorrect answer.|
 |Incorrect_2|The second incorrect answer. (Optional)|
 |Incorrect_3|The third incorrect answer. (Optional)|
@@ -15,4 +15,4 @@ A flashcard for dictionary or terminology definitions.
 
 ## Preview
 
-![Preview](https://github.com/eth-p/Anki-Cards/raw/master/Multiple%20Choice/Preview.png)
+![Preview](https://github.com/eth-p/Anki-Cards/raw/master/Choice/Preview.png)
