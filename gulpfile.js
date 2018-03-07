@@ -109,26 +109,24 @@ class Util {
 	 * @async
 	 */
 	static async card_html(card) {
-		// Find the HTML files.
+		// Find the generated card faces.
 		const dir   = path.join(DEST, card);
 		const files = (await fse.readdir(dir))
-			.filter((v) => path.parse(v).ext.toLowerCase() === '.html');
+			.filter((entry) => REGEX_CARD_FACE_GENERATED.test(path.basename(entry)));
 
-		// Read the HTML files.
+		// Read the HTML card faces.
 		let html = await Promise.all(files.map((file) => Util.read_file(path.join(dir, file))));
 
-		// Categorize the HTML files.
-		const regex = /^(?:([\d]+)-)?(Front|Back)\.html$/;
-		let cards   = [];
+		// Categorize the HTML card faces.
+		const regex = REGEX_CARD_FACE_GENERATED;
 
+		let cards = [];
 		for (let file of html) {
 			let captures = path.basename(file.name).match(regex);
-			if (captures !== null) {
-				let index = parseInt(captures[1]);
-				let card  = index in cards ? cards[index] : (cards[index] = {});
+			let index    = parseInt(captures[1]);
+			let card     = index in cards ? cards[index] : (cards[index] = {});
 
-				card[captures[2].toLowerCase()] = file.contents;
-			}
+			card[captures[2].toLowerCase()] = file.contents;
 		}
 
 		return cards.filter((val) => val != null);
@@ -195,43 +193,57 @@ class Tasks {
 
 gulp.task('compile:pug', () => Tasks.compile_pug(SRC_PUG));
 gulp.task('compile:scss', () => Tasks.compile_scss(SRC_SCSS));
-gulp.task('generate:preview', () => Tasks.generate_preview(CARDS, true));
+gulp.task('generate:preview', () => Tasks.generate_preview(CARDS, false));
+gulp.task('generate:screenshot', () => Tasks.generate_preview(CARDS, true));
 
-gulp.task('default', gulp.series(gulp.parallel('compile:pug', 'compile:scss'), 'generate:preview'));
+gulp.task('default', gulp.series(gulp.parallel('compile:pug', 'compile:scss'), 'generate:screenshot'));
 
 // ---------------------------------------------------------------------------------------------------------------------
 // Watch:
 
 if (WATCH) {
 	gulp.watch(['**/*.pug', '**/*.scss'], (c) => c()).on('change', debounce(
-		async function rebuild(file) {
-			const parsed   = path.parse(file);
-			const template = (parsed.dir === '' && parsed.name === 'Template');
-			const cards    = template ? CARDS : [parsed.dir.split(path.sep)[0]];
+		async function rebuild(changed) {
+			const file        = path.parse(changed);
+			const shared      = file.dir === '';
+			let affectedFiles = null;
+			let affectedCards = null;
 
-			try {
-				if (file === 'Preview.pug') {
-					await stp(Tasks.generate_preview(CARDS, false));
-					return;
+			// Is it just the preview file?
+			if (shared && file.base === 'Preview.pug') {
+				await stp(Tasks.generate_preview(CARDS, false));
+				return;
+			}
+
+			// What cards are affected?
+			affectedCards = shared ? CARDS : [file.dir.split(path.sep)[0]];
+
+			// What sources are affected?
+			switch (file.ext.toLowerCase()) {
+				case '.scss': {
+					affectedFiles = shared ? SRC_SCSS : affectedCards.map((card) => path.join(card, 'Style.scss'));
+					break;
 				}
 
-				switch (parsed.ext.toLowerCase()) {
-					case '.scss': {
-						const files = template ? SRC_SCSS : [path.join(parsed.dir, 'Style.scss')];
-						await stp(Tasks.compile_scss(files));
-						await stp(Tasks.generate_preview(cards, false));
-						break;
-					}
-
-					case '.pug': {
-						const files = template ? SRC_PUG : [file];
-						await stp(Tasks.compile_pug(files));
-						await stp(Tasks.generate_preview(cards, false));
-						break;
-					}
+				case '.pug': {
+					affectedFiles = shared ? SRC_PUG : [changed];
+					break;
 				}
-			} catch (ex) {
-				console.log('Error', ex);
+			}
+
+			// Do something!
+			switch (file.ext.toLowerCase()) {
+				case '.scss': {
+					await stp(Tasks.compile_scss(affectedFiles));
+					await stp(Tasks.generate_preview(affectedCards, false));
+					break;
+				}
+
+				case '.pug': {
+					await stp(Tasks.compile_pug(affectedFiles));
+					await stp(Tasks.generate_preview(affectedCards, false));
+					break;
+				}
 			}
 		}, 300));
 }
