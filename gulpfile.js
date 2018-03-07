@@ -162,11 +162,12 @@ class Tasks {
 			}
 		});
 
-		// Read preview files.
+		// Generate preview data.
+		// This will read all the preview files (for dynamic inclusion).
 		let data = [];
 		await Promise.all(cards.map((card) => (async () => {
 			data[card] = {
-				cards: await Util.card_html(card)
+				previews: await Util.card_html(card)
 			};
 		})()));
 

@@ -36,17 +36,17 @@ html
 			}
 
 	body
-		for card in cards
+		for preview in previews
 			div.preview-set
 				div.preview-front
 					div.preview-offset
 						div.card
-							| !{card.front}
+							| !{preview.front}
 
 				div.preview-back
 					div.preview-offset
 						div.card
-							| !{card.back}
+							| !{preview.back}
 
 	script
 		| document.body.classList.add(window.location.hash.substring(1))
