@@ -8,6 +8,7 @@ const g_debug   = require('gulp-debug');
 const g_file    = require('gulp-file');
 const g_webshot = require('gulp-webshot');
 const g_noop    = require('gulp-noop');
+const g_data    = require('gulp-data');
 const pug       = require('pug');
 const path      = require('path');
 const stp       = require('stream-to-promise');
@@ -16,16 +17,16 @@ const fse       = require('fs-extra');
 // ---------------------------------------------------------------------------------------------------------------------
 // Config:
 
-const SRC_PUG         = ['**/Back.pug', '**/Front.pug', '!Template.pug', '!Preview.pug'];
-const SRC_SCSS        = ['**/Style.scss', '!Template.scss', '!Theme.scss', '!Material.scss'];
-const DEST            = path.join(__dirname, 'Release');
-const CARDS           = ((dir) => {
+const SRC_PUG  = ['**/*Back.pug', '**/*Front.pug', '!Template.pug', '!Preview.pug'];
+const SRC_SCSS = ['**/Style.scss', '!Template.scss', '!Theme.scss', '!Material.scss'];
+const DEST     = path.join(__dirname, 'Release');
+const CARDS    = ((dir) => {
 	let files = fse.readdirSync(dir);
 	let cards = [];
 
 	for (let file of files) {
 		let card = path.join(dir, file);
-		if (fse.statSync(card).isDirectory() && fse.existsSync(path.join(card, 'Front.pug'))) {
+		if (fse.statSync(card).isDirectory() && fse.existsSync(path.join(card, '1-Front.pug'))) {
 			cards.push(path.relative(dir, card));
 		}
 	}
@@ -35,6 +36,55 @@ const CARDS           = ((dir) => {
 
 // ---------------------------------------------------------------------------------------------------------------------
 // Build:
+
+class Util {
+
+	/**
+	 * Asynchronously read a file and return its name and contents.
+	 *
+	 * @param {string} file The file to read.
+	 * @async
+	 */
+	static async read_file(file) {
+		return {
+			name: file,
+			contents: await fse.readFile(file)
+		}
+	}
+
+	/**
+	 * Asynchronously read all the generated HTML files for a card.
+	 *
+	 * @param {string} card The name of the card to read.
+	 * @async
+	 */
+	static async card_html(card) {
+		// Find the HTML files.
+		const dir   = path.join(DEST, card);
+		const files = (await fse.readdir(dir))
+			.filter((v) => path.parse(v).ext.toLowerCase() === '.html');
+
+		// Read the HTML files.
+		let html = await Promise.all(files.map((file) => Util.read_file(path.join(dir, file))));
+
+		// Categorize the HTML files.
+		const regex = /^(?:([\d]+)-)?(Front|Back)\.html$/;
+		let cards = [];
+
+		for (let file of html) {
+			let captures = path.basename(file.name).match(regex);
+			if (captures !== null) {
+				let index = parseInt(captures[1]);
+				let card = index in cards ? cards[index] : (cards[index] = {});
+
+				card[captures[2].toLowerCase()] = file.contents;
+			}
+		}
+
+		return cards.filter((val) => val != null);
+	}
+
+}
 
 class Tasks {
 
@@ -52,16 +102,26 @@ class Tasks {
 			.pipe(gulp.dest(DEST, {sourcemaps: '.'}));
 	}
 
-	static async generate_preview(files, screenshot) {
-		const preview  = await fse.readFile(path.join(__dirname, 'Preview.pug'));
-		const previews = CARDS.map((card) => {
+	static async generate_preview(cards, screenshot) {
+		let preview_template = await fse.readFile(path.join(__dirname, 'Preview.pug'));
+		let preview_files    = cards.map((card) => {
 			return {
 				name: path.join(DEST, card, 'Preview.pug'),
-				source: preview
+				source: preview_template
 			}
 		});
 
-		return g_file(previews, {src: true})
+		// Read preview files.
+		let data = [];
+		await Promise.all(cards.map((card) => (async () => {
+			data[card] = {
+				cards: await Util.card_html(card)
+			};
+		})()));
+
+		// Gulp pipeline.
+		return g_file(preview_files, {src: true})
+			.pipe(g_data((file) => data[path.basename(path.dirname(file.path))]))
 			.pipe(g_pug())
 			.pipe(g_debug())
 			.pipe(gulp.dest(__dirname))

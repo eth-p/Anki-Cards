@@ -10,49 +10,47 @@ html
 			/* Preview Styles */
 			body {
 				width: 735px;
-				height: 650px;
-				padding: 20px;
+				padding: 5px;
+				margin: 0;
 			}
 
-			div#front,
-			div#back {
+			div.preview-front,
+			div.preview-back {
 				box-sizing: border-box;
-				position: absolute;
-				top: 5px;
-				bottom: 5px;
+				display: inline-block;
+				position: relative;
 				width: 360px;
 				height: 640px;
 
-				border: #000 1px solid;
 				padding: 20px;
 				padding-top: 0;
 
+				margin-right: 5px;
+				margin-bottom: 5px;
+
+				border: #000 1px solid;
+
 				background: #fff;
 				box-shadow: rgba(0, 0, 0, 0.3) 1px 1px 2px;
+
 			}
 
-			div#front {
-				left: 5px;
-			}
-
-			div#back {
-				left: 370px
-			}
-
-			div.offset {
+			div.preview-offset {
 				margin-top: -5px;
 			}
 
 	body
-		div#front
-			div.offset
-				div.card
-					include Front.html
+		for card in cards
+			div.preview-set
+				div.preview-front
+					div.preview-offset
+						div.card
+							| !{card.front}
 
-		div#back
-			div.offset
-				div.card
-					include Back.html
+				div.preview-back
+					div.preview-offset
+						div.card
+							| !{card.back}
 
 	script
 		| document.body.classList.add(window.location.hash.substring(1))
