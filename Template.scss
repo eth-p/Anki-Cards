@@ -21,13 +21,18 @@ $platform-enabled: (
 // ---------------------------------------------------------------------------------------------------------------------
 // Theme:
 
-@import "Theme.scss";
-
 $header-padding: 3px;
 $header-height: 25px;
 
-$card-text: #000;
-$card-background: #FFF;
+$paragraph-padding: 3px;
+
+$font-size: 20px;
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Import:
+
+@import "Theme.scss";
+@import "Material.scss";
 
 // ---------------------------------------------------------------------------------------------------------------------
 // Global:
@@ -38,8 +43,6 @@ $imported-template: false !default;
 
 	.card {
 		font-family: "Roboto", "Arial", sans-serif;
-		color: $card-text;
-		background: $card-background;
 
 		header {
 			// Position
@@ -57,10 +60,6 @@ $imported-template: false !default;
 				box-sizing: border-box;
 				padding: $header-padding;
 			}
-
-			// Color
-			color: $card-background;
-			background: $card-text;
 		}
 
 		main {
@@ -68,7 +67,7 @@ $imported-template: false !default;
 			margin-top: $header-height + 18px;
 
 			// Font
-			font-size: 20px;
+			font-size: $font-size;
 		}
 
 		layout-columns {
@@ -102,6 +101,14 @@ $imported-template: false !default;
 		ac-answer,
 		ac-placeholder {
 			display: inline;
+		}
+
+		h1 {
+			font-weight: normal;
+			font-size: $font-size + 5px;
+			margin: 0 0 $paragraph-padding 0;
+
+			border-bottom: transparent 1px solid;
 		}
 	}
 }
@@ -143,8 +150,18 @@ $imported-template: false !default;
 // ---------------------------------------------------------------------------------------------------------------------
 // Template: Global
 
-@mixin template-global {
+@mixin template-global($primary: material(#000), $accent: material(#000)) {
 	.card {
+		@include card-header() {
+			background: map-get($primary, 500);
+			color: map-get($primary, text);
+		}
+
+		h1 {
+			color: map-get($primary, 600);
+			border-bottom-color: map-get($primary, 600);
+		}
+
 		@content;
 	}
 }
@@ -152,7 +169,7 @@ $imported-template: false !default;
 // ---------------------------------------------------------------------------------------------------------------------
 // Template: Android
 
-@mixin template-android($defaults: true) {
+@mixin template-android($primary: material(#000), $accent: material(#000), $defaults: true) {
 	@include --template-platform('android', '.android') {
 		@content;
 	}
@@ -161,7 +178,7 @@ $imported-template: false !default;
 // ---------------------------------------------------------------------------------------------------------------------
 // Template: Mac OS
 
-@mixin template-macos($defaults: true) {
+@mixin template-macos($primary: material($apple-border), $accent: material(#000), $defaults: true) {
 	@include --template-platform('macos', '.mac') {
 		@if ($defaults == true) {
 			@include card-header() {
@@ -178,7 +195,7 @@ $imported-template: false !default;
 				.type {
 					padding: 0;
 
-					& .field {
+					.field {
 						display: inline-block;
 
 						margin-top: 1px;
@@ -186,8 +203,8 @@ $imported-template: false !default;
 						padding: ($header-padding) ($header-padding + 1) ($header-padding - 1) ($header-padding + 1);
 						border-radius: 6px;
 
-						background: $apple-border;
-						color: $apple-text;
+						background: map-get($primary, 500);
+						color: map-get($primary, text);
 					}
 				}
 			}
@@ -200,7 +217,7 @@ $imported-template: false !default;
 // ---------------------------------------------------------------------------------------------------------------------
 // Template: Windows
 
-@mixin template-windows($defaults: true) {
+@mixin template-windows($primary: material(#000), $accent: material(#000), $defaults: true) {
 	@include --template-platform('windows', '.win') {
 		@content;
 	}

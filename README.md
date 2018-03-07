@@ -16,3 +16,10 @@ npm run build
 ```
 
 This will create a `Release` directory with subdirectories for each card type.
+
+## Contributing
+
+### Anki Qt Compatibility
+
+Please note that Anki Qt's web renderer is quite old, and does not
+have support for many modern features such as JavaScript's `let` or CSS's `flex`.
