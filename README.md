@@ -6,6 +6,7 @@ A collection of custom-designed Anki flashcards.
 |[Definition](Definition/About.md)|The definition of a term. (Reversible)|
 |[Choice](Choice/About.md)|A multiple choice question.|
 |[Fact](Fact/About.md)|A fact.|
+|[Formula](Formula/About.md)|A math formulag.|
 
 
 ## Building
