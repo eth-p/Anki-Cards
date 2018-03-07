@@ -7,5 +7,8 @@ include ../Template
 		div.term= field('Name')
 
 	ac-question
+		+if-field-exists('Variables')
+			div.paragraph.variables= field('Variables')
+
 		div.paragraph.formula
 			ac-placeholder

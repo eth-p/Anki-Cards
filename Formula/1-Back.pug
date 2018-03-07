@@ -6,10 +6,14 @@ include ../Template
 	div.paragraph
 		div.term= field('Name')
 
+	+if-field-exists('Variables')
+		div.paragraph.variables= field('Variables')
+
 	ac-answer
 		div.paragraph.formula= field('Formula')
 
 	ac-details
+
 		+if-field-exists('Explanation')
 			+details('Explanation')
 				div.explanation= field('Explanation')

@@ -21,6 +21,16 @@ $header-text: map-get($primary, text);
 		color: $term-color;
 	}
 
+	.variables {
+		$size: map-get($text-paragraph, size) - 3px;
+
+		font-size: $size;
+
+		.latex {
+			height: $size;
+		}
+	}
+
 	ac-placeholder::after {
 		color: inherit;
 		content: '_____';
