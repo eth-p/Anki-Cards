@@ -9,9 +9,11 @@ include ../Template
 	ac-answer
 		hr
 		h2 Answer:
-		div.answer= field('Correct')
+		div.paragraph.answer= field('Correct')
 
 		+if-field-exists('Explanation')
+			hr
+			h2 Explanation:
 			div.paragraph.explanation= field('Explanation')
 
 
