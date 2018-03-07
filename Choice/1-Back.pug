@@ -11,9 +11,9 @@ include ../Template
 		h2 Answer:
 		div.paragraph.answer= field('Correct')
 
+	ac-details
 		+if-field-exists('Explanation')
-			hr
-			h2 Explanation:
-			div.paragraph.explanation= field('Explanation')
+			+details('Explanation')
+				div.explanation= field('Explanation')
 
 

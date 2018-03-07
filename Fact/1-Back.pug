@@ -6,7 +6,7 @@ include ../Template
 	ac-answer
 		div.paragraph= field('Fact')
 
+	ac-details
 		+if-field-exists('Explanation')
-			hr
-			h2 Explanation:
-			div.paragraph.explanation= field('Explanation')
+			+details('Explanation')
+				div.explanation= field('Explanation')

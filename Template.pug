@@ -16,6 +16,16 @@ mixin if-field-empty(field)
 	block
 	= `\n{{/${field}}}\n`
 
+mixin subsection(name)
+	hr
+	h2= `${name}:`
+	block
+
+mixin details(name)
+	+subsection(name)
+		div.paragraph
+			block
+
 mixin card
 	header
 		layout-columns
