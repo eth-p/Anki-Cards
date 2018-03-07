@@ -71,6 +71,9 @@ $imported-template: false !default;
 			font-size: map-get($card-header, text-size);
 			font-family: map-get($card-header, text-family);
 
+			// Border
+			border-bottom: transparent 1px solid;
+
 			// Components
 			layout-column {
 				box-sizing: border-box;
@@ -114,16 +117,14 @@ $imported-template: false !default;
 			}
 		}
 
+		// Custom Tags:
 		ac-question,
 		ac-answer,
 		ac-placeholder {
 			display: inline;
 		}
 
-		.paragraph {
-			margin: map-get($text-paragraph, spacing) 0;
-		}
-
+		// Dividers:
 		hr {
 			height: 1px;
 			margin: 0;
@@ -131,6 +132,11 @@ $imported-template: false !default;
 
 			border: none;
 			border-bottom: #000 1px solid;
+		}
+
+		// Typography:
+		.paragraph {
+			margin: map-get($text-paragraph, spacing) 0;
 		}
 
 		h2 {
@@ -185,18 +191,21 @@ $imported-template: false !default;
 		@include card-header() {
 			background: map-get($primary, 500);
 			color: map-get($primary, text);
+			border-bottom-color: map-get($primary, 900);
 		}
 
+		// Dividers:
+		hr {
+			border-bottom-color: rgba(#000, 0.12);
+		}
+
+		// Typography:
 		h2 {
 			@if (map-get($accent, 500) == #000) {
 				color: rgba(#000, 0.54);
 			} @else {
 				color: map-get($accent, 500);
 			}
-		}
-
-		hr {
-			border-bottom-color: rgba(#000, 0.12);
 		}
 
 		@content;
