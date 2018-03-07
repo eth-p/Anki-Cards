@@ -17,10 +17,6 @@ $header-text: map-get($primary, text);
 // Global:
 
 @include template-global($primary) {
-	.term {
-		color: $term-color;
-	}
-
 	ac-placeholder::after {
 		color: inherit;
 		content: '_____';
