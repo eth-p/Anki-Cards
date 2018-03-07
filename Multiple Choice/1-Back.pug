@@ -4,9 +4,13 @@
 include ../Template
 +card
 	ac-question
-		p
-			span.question= field('Question')
+		div.paragraph.question= field('Question')
 
 	ac-answer
 		h1 Answer:
-		span= field('Correct')
+		div.answer= field('Correct')
+
+		+if-field-exists('Explanation')
+			div.paragraph.explanation= field('Explanation')
+
+

@@ -7,6 +7,7 @@ A flashcard for dictionary or terminology definitions.
 |:--|:--|
 |Question|The multiple choice question.|
 |Correct|The correct answer.|
+|Explanation|An additional explanation.|
 |Incorrect_1|The first incorrect answer.|
 |Incorrect_2|The second incorrect answer. (Optional)|
 |Incorrect_3|The third incorrect answer. (Optional)|

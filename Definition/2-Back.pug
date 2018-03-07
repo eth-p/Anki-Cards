@@ -4,12 +4,11 @@
 include ../Template
 +card
 	+if-field-exists('Reversed')
-		p
-			ac-answer
-				span.term= field('Term')
-				span &nbsp;is&nbsp;
+		ac-answer
+			span.term= field('Term')
+			span &nbsp;is&nbsp;
 
-			ac-question
-				span.definition
-					= field('Definition')
-					| .
+		ac-question
+			span.definition
+				= field('Definition')
+				| .
