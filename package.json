@@ -9,6 +9,7 @@
 		"url": "https://github.com/eth-p/Anki-Cards.git"
 	},
 	"devDependencies": {
+		"debounce": "^1.1.0",
 		"fs-extra": "^5.0.0",
 		"gulp": "^4.0.0",
 		"gulp-data": "^1.3.1",
@@ -24,5 +25,5 @@
 		"build": "gulp default",
 		"watch": "gulp --watch --continue"
 	},
-	"license": "MIT"
+	"license": "MIT",
 }

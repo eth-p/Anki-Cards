@@ -1,6 +1,8 @@
 // ---------------------------------------------------------------------------------------------------------------------
 // Anki-Cards | Copyright (C) 2018 eth-p
 // ---------------------------------------------------------------------------------------------------------------------
+// Import:
+
 const gulp      = require('gulp');
 const g_pug     = require('gulp-pug');
 const g_sass    = require('gulp-sass');
@@ -9,6 +11,7 @@ const g_file    = require('gulp-file');
 const g_webshot = require('gulp-webshot');
 const g_noop    = require('gulp-noop');
 const g_data    = require('gulp-data');
+const debounce  = require('debounce');
 const pug       = require('pug');
 const path      = require('path');
 const stp       = require('stream-to-promise');
@@ -17,22 +20,69 @@ const fse       = require('fs-extra');
 // ---------------------------------------------------------------------------------------------------------------------
 // Config:
 
-const SRC_PUG  = ['**/*Back.pug', '**/*Front.pug', '!Template.pug', '!Preview.pug'];
-const SRC_SCSS = ['**/Style.scss', '!Template.scss', '!Theme.scss', '!Material.scss'];
-const DEST     = path.join(__dirname, 'Release');
-const CARDS    = ((dir) => {
-	let files = fse.readdirSync(dir);
-	let cards = [];
+/**
+ * The pug source globs.
+ * @type {string[]}
+ */
+const SRC_PUG = [
+	'**/*Back.pug',
+	'**/*Front.pug',
+	'!Template.pug',
+	'!Preview.pug'
+];
 
-	for (let file of files) {
-		let card = path.join(dir, file);
-		if (fse.statSync(card).isDirectory() && fse.existsSync(path.join(card, '1-Front.pug'))) {
-			cards.push(path.relative(dir, card));
-		}
-	}
+/**
+ * The SCSS source globs.
+ * @type {string[]}
+ */
+const SRC_SCSS = [
+	'**/Style.scss',
+	'!Template.scss',
+	'!Theme.scss',
+	'!Material.scss'
+];
 
-	return cards;
+/**
+ * The build destination folder.
+ * @type {string}
+ */
+const DEST = path.join(__dirname, 'Release');
+
+/**
+ * A regex matcher for card face templates (i.e. <code>n-Front.pug</code>).
+ * @type {RegExp}
+ */
+const REGEX_CARD_FACE_TEMPLATE = /^(?:([\d]+)-)?(Front|Back)\.pug$/;
+
+/**
+ * A regex matcher for generated card faces (i.e. <code>n-Front.html</code>).
+ * @type {RegExp}
+ */
+const REGEX_CARD_FACE_GENERATED = /^(?:([\d]+)-)?(Front|Back)\.html$/;
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Automatic:
+
+/**
+ * A list of card types in Anki-Cards.
+ * This is automatically determined by scanning for subdirectories that have face card templates.
+ * @type {string[]}
+ */
+const CARDS = ((dir) => {
+	return (fse.readdirSync(dir)).filter((subdir) => {
+		if (!fse.statSync(path.join(dir, subdir)).isDirectory()) return false;
+		return undefined !== fse.readdirSync(path.join(dir, subdir)).find((filename) => {
+			return REGEX_CARD_FACE_TEMPLATE.test(filename);
+		});
+	});
 })(__dirname);
+
+/**
+ * Whether or not to watch for changes.
+ * This is automatically determined by the existence of the --watch argument.
+ * @type {boolean}
+ */
+const WATCH = Array.from(process.argv).includes('--watch');
 
 // ---------------------------------------------------------------------------------------------------------------------
 // Build:
@@ -69,13 +119,13 @@ class Util {
 
 		// Categorize the HTML files.
 		const regex = /^(?:([\d]+)-)?(Front|Back)\.html$/;
-		let cards = [];
+		let cards   = [];
 
 		for (let file of html) {
 			let captures = path.basename(file.name).match(regex);
 			if (captures !== null) {
 				let index = parseInt(captures[1]);
-				let card = index in cards ? cards[index] : (cards[index] = {});
+				let card  = index in cards ? cards[index] : (cards[index] = {});
 
 				card[captures[2].toLowerCase()] = file.contents;
 			}
@@ -85,6 +135,9 @@ class Util {
 	}
 
 }
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Util:
 
 class Tasks {
 
@@ -149,17 +202,9 @@ gulp.task('default', gulp.series(gulp.parallel('compile:pug', 'compile:scss'), '
 // ---------------------------------------------------------------------------------------------------------------------
 // Watch:
 
-if (Array.from(process.argv).includes('--watch')) {
-	let debounce = null;
-	let watcher  = null;
-
-	watcher = gulp.watch(['**/*.pug', '**/*.scss'], (c) => c())
-	watcher.on('change', (file, stats) => {
-		if (debounce != null) {
-			clearTimeout(debounce);
-		}
-
-		debounce = setTimeout(async () => {
+if (WATCH) {
+	gulp.watch(['**/*.pug', '**/*.scss'], (c) => c()).on('change', debounce(
+		async function rebuild(file) {
 			const parsed   = path.parse(file);
 			const template = (parsed.dir === '' && parsed.name === 'Template');
 			const cards    = template ? CARDS : [parsed.dir.split(path.sep)[0]];
@@ -188,8 +233,5 @@ if (Array.from(process.argv).includes('--watch')) {
 			} catch (ex) {
 				console.log('Error', ex);
 			}
-
-			debounce = null;
-		}, 300);
-	});
+		}, 300));
 }
