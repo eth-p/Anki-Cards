@@ -21,14 +21,27 @@ $platform-enabled: (
 // ---------------------------------------------------------------------------------------------------------------------
 // Theme:
 
-$header-padding: 3px;
-$header-height: 25px;
+$card-header: (
+		text-family: null,
+		text-size: 15px,
 
-$misc-padding: 3px;
+		padding: 3px,
+		height: 25px,
+);
 
-$paragraph-spacing: 20px;
+$text-subheader: (
+		family: null,
+		size: 16px,
 
-$font-size: 20px;
+		margin: 0 0 5px 0,
+);
+
+$text-paragraph: (
+		family: null,
+		size: 20px,
+
+		spacing: 20px,
+);
 
 // ---------------------------------------------------------------------------------------------------------------------
 // Import:
@@ -52,24 +65,26 @@ $imported-template: false !default;
 			top: 0;
 			left: 0;
 			right: 0;
-			height: $header-height;
+			height: map-get($card-header, height);
 
 			// Font
-			font-size: 15px;
+			font-size: map-get($card-header, text-size);
+			font-family: map-get($card-header, text-family);
 
 			// Components
 			layout-column {
 				box-sizing: border-box;
-				padding: $header-padding;
+				padding: map-get($card-header, padding);
 			}
 		}
 
 		main {
 			display: block;
-			margin-top: $header-height + 18px;
+			margin-top: map-get($card-header, height) + 18px;
 
 			// Font
-			font-size: $font-size;
+			font-size: map-get($text-paragraph, size);
+			font-family: map-get($text-paragraph, family);
 		}
 
 		layout-columns {
@@ -106,15 +121,24 @@ $imported-template: false !default;
 		}
 
 		.paragraph {
-			margin: $paragraph-spacing 0;
+			margin: map-get($text-paragraph, spacing) 0;
 		}
 
-		h1 {
-			font-weight: normal;
-			font-size: $font-size + 5px;
-			margin: 0 0 $misc-padding 0;
+		hr {
+			height: 1px;
+			margin: 0;
+			padding: 0;
 
-			border-bottom: transparent 1px solid;
+			border: none;
+			border-bottom: #000 1px solid;
+		}
+
+		h2 {
+			font-weight: 500;
+			font-size: map-get($text-subheader, size);
+			font-family: map-get($text-subheader, family);
+
+			padding: map-get($text-subheader, padding);
 		}
 	}
 }
@@ -163,9 +187,16 @@ $imported-template: false !default;
 			color: map-get($primary, text);
 		}
 
-		h1 {
-			color: map-get($primary, 600);
-			border-bottom-color: map-get($primary, 600);
+		h2 {
+			@if (map-get($accent, 500) == #000) {
+				color: rgba(#000, 0.54);
+			} @else {
+				color: map-get($accent, 500);
+			}
+		}
+
+		hr {
+			border-bottom-color: rgba(#000, 0.12);
 		}
 
 		@content;
@@ -202,6 +233,8 @@ $imported-template: false !default;
 					padding: 0;
 
 					.field {
+						$header-padding: map-get($card-header, padding);
+
 						display: inline-block;
 
 						margin-top: 1px;
