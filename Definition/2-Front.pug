@@ -3,9 +3,14 @@
 //- --------------------------------------------------------------------------------------------------------------------
 include ../Template
 +card
-	p
-		ac-question
-			span.term= field('Term')
-			span &nbsp;is&nbsp;
-		ac-answer
-			ac-placeholder
+	+if-field-exists('Reversed')
+		p
+			ac-answer
+				span.term
+					ac-placeholder
+				span &nbsp;is&nbsp;
+
+			ac-question
+				span.definition
+					= field('Definition')
+					| .

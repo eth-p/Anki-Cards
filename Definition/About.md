@@ -7,6 +7,7 @@ A flashcard for dictionary or terminology definitions.
 |:--|:--|
 |Term|The word or term being defined.|
 |Definition|The definition.|
+|Reverse|If not empty, will generate a reversed card.|
 
 ## Preview
 

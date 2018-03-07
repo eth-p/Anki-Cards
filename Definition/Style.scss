@@ -22,12 +22,13 @@ $header-text: map-get($primary, text);
 		color: $header-text;
 	}
 
-	ac-question > .term {
+	.term {
 		color: $term-color;
 	}
 
-	ac-answer > ac-placeholder::after {
-		content: '_____.';
+	ac-placeholder::after {
+		color: inherit;
+		content: '_____';
 	}
 }
 
