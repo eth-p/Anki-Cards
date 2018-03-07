@@ -98,7 +98,7 @@ class Util {
 	static async read_file(file) {
 		return {
 			name: file,
-			contents: await fse.readFile(file)
+			contents: await fse.readFile(file, {encoding: 'utf8'})
 		}
 	}
 
@@ -108,7 +108,7 @@ class Util {
 	 * @param {string} card The name of the card to read.
 	 * @async
 	 */
-	static async card_html(card) {
+	static async read_card_html(card) {
 		// Find the generated card faces.
 		const dir   = path.join(DEST, card);
 		const files = (await fse.readdir(dir))
@@ -130,6 +130,28 @@ class Util {
 		}
 
 		return cards.filter((val) => val != null);
+	}
+
+	/**
+	 * Remove the template tags from generated card HTML.
+	 * This is useful for generating previews.
+	 *
+	 * @param {object} card An object containing the card HTML.
+	 */
+	static html_detemplate(card) {
+		const REGEX_TEMPLATE_FIELD       = /{{([\w\-]+)}}/g;
+		const REGEX_TEMPLATE_CONDITIONAL = /{{[\^\#\/][\w\-]+}}/g;
+		const copy                       = {};
+
+		for (let key in card) {
+			if (card.hasOwnProperty(key)) {
+				copy[key] = card[key]
+					.replace(REGEX_TEMPLATE_FIELD, (match, field) => `(${field})`)
+					.replace(REGEX_TEMPLATE_CONDITIONAL, "");
+			}
+		}
+
+		return copy;
 	}
 
 }
@@ -167,7 +189,7 @@ class Tasks {
 		let data = [];
 		await Promise.all(cards.map((card) => (async () => {
 			data[card] = {
-				previews: await Util.card_html(card)
+				previews: (await Util.read_card_html(card)).map((c) => Util.html_detemplate(c))
 			};
 		})()));
 
