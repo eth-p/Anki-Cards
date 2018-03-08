@@ -9,7 +9,7 @@ Click on one of the card types below for explanations and a preview image.
 |[Fact](Fact/About.md)|A fact.|
 |[Formula](Formula/About.md)|A math formula.|
 |[Theorem](Theorem/About.md)|A math theorem.|
-|[Theorem](Theorem/About.md)|A translation for a word.|
+|[Translation](Translation/About.md)|A translation for a word.|
 
 ## Installation
 
