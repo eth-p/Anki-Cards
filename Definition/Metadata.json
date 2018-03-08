@@ -3,6 +3,11 @@
 	"name": "Definition",
 	"type": 0,
 
+	"cards": {
+		"1": "Definition",
+		"2": "Definition (Reverse)"
+	},
+
 	"sort-by": 0,
 	"fields": [
 		{

@@ -271,8 +271,8 @@ class Util {
 		note.usn  = 'revision' in metadata ? metadata['revision'] : 0;
 		note.tags = 'tags' in metadata ? metadata.tags : [];
 
-		note.flds = '<Automatically Generated>' + "\x1F".repeat(metadata.fields.length);
-		note.sfld = '<Automatically Generated>' + "\x1F".repeat(metadata.fields.length);
+		note.flds = '<Automatically Generated>' + "\x1F".repeat(metadata.fields.length - 1);
+		note.sfld = '<Automatically Generated>' + "\x1F".repeat(metadata.fields.length - 1);
 
 		// Metadata (Constant) -> Model
 		note.csum  = parseInt(crypto.createHash('sha1').update(note.sfld).digest('hex').substring(0, 8), 16);
@@ -375,8 +375,15 @@ class Tasks {
 
 			model.css   = card.style;
 			model.tmpls = card.templates.map((template, index) => {
+				let indexNormal = parseInt(index) + 1;
+				let name        = `Card ${indexNormal}`;
+
+				if ('cards' in card.metadata && indexNormal in card.metadata.cards) {
+					name = card.metadata.cards[indexNormal];
+				}
+
 				return {
-					name: `Card ${index}`,
+					name: name,
 					bqfmt: "",
 					qfmt: template.front,
 					did: 0,
@@ -401,14 +408,15 @@ class Tasks {
 		}
 
 		// Generate database.
-		const databaseTemplate = await fse.readFile(path.join(__dirname, 'Anki2.sql'), 'utf8');
-		const databaseFile     = path.join(DEST, 'collection.anki2');
-		const database         = new sqlite3.Database(databaseFile);
+		const databaseFile = path.join(DEST, 'collection.anki2');
 
 		try {
 			await fse.unlink(databaseFile);
 		} catch (ex) {
 		}
+
+		const databaseTemplate = await fse.readFile(path.join(__dirname, 'Anki2.sql'), 'utf8');
+		const database         = new sqlite3.Database(databaseFile);
 
 		database.serialize(() => {
 			database.exec(databaseTemplate);

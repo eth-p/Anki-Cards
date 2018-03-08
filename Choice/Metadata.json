@@ -3,6 +3,10 @@
 	"name": "Choice",
 	"type": 0,
 
+	"cards": {
+		"1": "Multiple Choice"
+	},
+
 	"sort-by": 0,
 	"fields": [
 		{

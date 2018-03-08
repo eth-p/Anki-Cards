@@ -3,6 +3,10 @@
 	"name": "Formula",
 	"type": 0,
 
+	"cards": {
+		"1": "Formula"
+	},
+
 	"sort-by": 0,
 	"fields": [
 		{

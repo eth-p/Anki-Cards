@@ -3,6 +3,10 @@
 	"name": "Fact",
 	"type": 0,
 
+	"cards": {
+		"1": "Fact"
+	},
+
 	"sort-by": 0,
 	"fields": [
 		{
