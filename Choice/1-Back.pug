@@ -13,7 +13,7 @@ include ../Template
 
 	ac-details
 		+if-field-exists('Explanation')
-			+details('Explanation')
+			+details('Explanation').small
 				div.explanation= field('Explanation')
 
 

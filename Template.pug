@@ -21,9 +21,9 @@ mixin subsection(name)
 	h2= `${name}:`
 	block
 
-mixin details(name)
+mixin details(name, small)
 	+subsection(name)
-		div.paragraph
+		div.paragraph&attributes(attributes)
 			block
 
 mixin card(options)

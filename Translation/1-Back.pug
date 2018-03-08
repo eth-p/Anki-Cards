@@ -19,7 +19,7 @@ include ../Template
 		+if-field-exists('Pronunciation')
 			div.paragraph.small.pronunciation= field('Pronunciation')
 
-	+if-field-exists('Notes')
-		hr
-		h2 Notes:
-		div.paragraph.small.notes= field('Notes')
+	ac-details
+		+if-field-exists('Notes')
+			+details('Notes').small
+				div.notes= field('Notes')

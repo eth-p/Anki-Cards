@@ -20,7 +20,7 @@ include ../Template
 		ac-answer
 			div.paragraph.definition= field('Definition')
 
+		ac-details
 			+if-field-exists('Notes')
-				hr
-				h2 Notes:
-				div.paragraph.small.notes= field('Notes')
+				+details('Notes').small
+					div.notes= field('Notes')

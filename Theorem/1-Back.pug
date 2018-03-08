@@ -13,11 +13,10 @@ include ../Template
 		div.paragraph.theorem= field('Theorem')
 
 	ac-details
-
 		+if-field-exists('Explanation')
-			+details('Explanation')
+			+details('Explanation').small
 				div.explanation= field('Explanation')
 
 		+if-field-exists('Proof')
-			+details('Proof')
+			+details('Proof').small
 				div.proof= field('Proof')
