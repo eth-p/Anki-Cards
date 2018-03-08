@@ -1,0 +1,22 @@
+//- --------------------------------------------------------------------------------------------------------------------
+//- Anki-Cards | Copyright (C) 2018 eth-p
+//- --------------------------------------------------------------------------------------------------------------------
+include ../Template
++if-field-exists('Reversed')
+	+card({header: '{{#From Language}}{{#To Language}}{{To Language}} --> {{From Language}}{{/To Language}}{{/From Language}}'})
+		ac-question
+			div.paragraph.translation= field('Translation')
+
+			+if-field-exists('Pronunciation')
+				div.paragraph.small.pronunciation= field('Pronunciation')
+
+		hr
+		h2
+			+if-field-exists('From Language')
+				= field('From Language') + ':'
+			+if-field-empty('From Language')
+				| To:
+
+		ac-answer
+			div.paragraph.definition
+				ac-placeholder

@@ -1,0 +1,45 @@
+{
+	"id": 301300009006,
+	"name": "Translation",
+	"type": 0,
+
+	"cards": {
+		"1": "Translation",
+		"2": "Translation (Reverse)"
+	},
+
+	"sort-by": 0,
+	"fields": [
+		{
+			"name": "Definition",
+			"font-size": 20
+		},
+		{
+			"name": "Translation",
+			"font-size": 20
+		},
+		{
+			"name": "Pronunciation",
+			"font-size": 20
+		},
+		{
+			"name": "From Language",
+			"font-size": 13,
+			"sticky": true
+		},
+		{
+			"name": "To Language",
+			"font-size": 13,
+			"sticky": true
+		},
+		{
+			"name": "Notes",
+			"font-size": 13,
+			"sticky": true
+		},
+		{
+			"name": "Reversed",
+			"font-size": 13
+		}
+	]
+}

@@ -1,0 +1,56 @@
+	// ---------------------------------------------------------------------------------------------------------------------
+// Anki-Cards | Copyright (C) 2018 eth-p
+// ---------------------------------------------------------------------------------------------------------------------
+@import "../Material.scss";
+@import "../Template.scss";
+@import "../Theme.scss";
+// ---------------------------------------------------------------------------------------------------------------------
+// Theme:
+
+$primary: material(#E91E63);
+
+$translation-color: map-get($primary, 500);
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Global:
+
+@include template-global($primary) {
+	.term {
+		color: $translation-color;
+	}
+
+	.translation {
+		text-align: center;
+
+		color: $translation-color;
+	}
+
+	.pronunciation {
+		text-align: center;
+
+		margin-top: -(map-get($text-paragraph, spacing) / 2) !important;
+	}
+
+	ac-placeholder::after {
+		color: inherit;
+		content: '_____';
+	}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Platform: Android
+
+@include template-android($primary) {
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Platform: Mac OS
+
+@include template-macos($primary) {
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Platform: Windows
+
+@include template-windows() {
+}

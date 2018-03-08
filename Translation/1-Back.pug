@@ -1,0 +1,25 @@
+//- --------------------------------------------------------------------------------------------------------------------
+//- Anki-Cards | Copyright (C) 2018 eth-p
+//- --------------------------------------------------------------------------------------------------------------------
+include ../Template
++card({header: '{{#From Language}}{{#To Language}}{{From Language}} --> {{To Language}}{{/To Language}}{{/From Language}}'})
+	ac-question
+		div.paragraph.definition= field('Definition')
+
+	hr
+	h2
+		+if-field-exists('To Language')
+			= field('To Language') + ':'
+		+if-field-empty('To Language')
+			| To:
+
+	ac-answer
+		div.paragraph.translation= field('Translation')
+
+		+if-field-exists('Pronunciation')
+			div.paragraph.small.pronunciation= field('Pronunciation')
+
+	+if-field-exists('Notes')
+		hr
+		h2 Notes:
+		div.paragraph.small.notes= field('Notes')
