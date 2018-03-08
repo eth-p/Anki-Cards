@@ -174,15 +174,52 @@ class Util {
 	 * @param {object} card An object containing the card HTML.
 	 */
 	static html_detemplate(card) {
-		const REGEX_TEMPLATE_FIELD       = /{{([\w\-]+)}}/g;
-		const REGEX_TEMPLATE_CONDITIONAL = /{{[\^\#\/][\w\-]+}}/g;
+		const REGEX_TEMPLATE_FIELD       = /{{([\w \-]+)}}/g;
+		const REGEX_TEMPLATE_CONDITIONAL = /{{([\^#\/])([\w \-]+)}}/g;
 		const copy                       = {};
 
 		for (let key in card) {
+			let stack = [];
 			if (card.hasOwnProperty(key)) {
-				copy[key] = card[key]
-					.replace(REGEX_TEMPLATE_FIELD, (match, field) => `(${field})`)
-					.replace(REGEX_TEMPLATE_CONDITIONAL, "");
+				let modified = card[key];
+				let match;
+
+				// Convert fields to something readable.
+				modified = modified.replace(REGEX_TEMPLATE_FIELD, (match, field) => `(${field})`);
+
+				// Remove content of "if-field-empty" conditionals.
+				REGEX_TEMPLATE_CONDITIONAL.lastIndex = 0;
+				while ((match = REGEX_TEMPLATE_CONDITIONAL.exec(modified)) != null) {
+					let conditional = match[1];
+					let field       = match[2];
+					let index       = match.index;
+
+					switch (conditional) {
+						case '#':
+						case '^':
+							stack.push(match);
+							break;
+
+						case '/': {
+							let begin = stack.pop();
+							if (begin[1] === '^') {
+
+								modified = ''
+									+ modified.substring(0, begin.index)
+									+ modified.substring(match.index);
+
+								REGEX_TEMPLATE_CONDITIONAL.lastIndex -= match.index - begin.index;
+							}
+						}
+					}
+				}
+
+				// Remove conditionals.
+				REGEX_TEMPLATE_CONDITIONAL.lastIndex = 0;
+				modified = modified.replace(REGEX_TEMPLATE_CONDITIONAL, '');
+
+				// Update.
+				copy[key] = modified;
 			}
 		}
 
