@@ -1,0 +1,21 @@
+{
+	"id": 301300009003,
+	"name": "Fact",
+	"type": 0,
+
+	"sort-by": 0,
+	"fields": [
+		{
+			"name": "Question",
+			"font-size": 20
+		},
+		{
+			"name": "Fact",
+			"font-size": 20
+		},
+		{
+			"name": "Explanation",
+			"font-size": 13
+		}
+	]
+}

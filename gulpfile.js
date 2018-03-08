@@ -3,6 +3,7 @@
 // ---------------------------------------------------------------------------------------------------------------------
 // Import:
 
+'use strict';
 const gulp      = require('gulp');
 const g_pug     = require('gulp-pug');
 const g_sass    = require('gulp-sass');
@@ -16,6 +17,10 @@ const pug       = require('pug');
 const path      = require('path');
 const stp       = require('stream-to-promise');
 const fse       = require('fs-extra');
+const sqlite3   = require('sqlite3');
+const zip       = require('node-zip');
+const util      = require('util');
+const crypto    = require('crypto');
 
 // ---------------------------------------------------------------------------------------------------------------------
 // Config:
@@ -47,6 +52,12 @@ const SRC_SCSS = [
  * @type {string}
  */
 const DEST = path.join(__dirname, 'Release');
+
+/**
+ * The completed package file.
+ * @type {string}
+ */
+const DEST_PKG = path.join(DEST, 'Anki-Cards.apkg');
 
 /**
  * A regex matcher for card face templates (i.e. <code>n-Front.pug</code>).
@@ -90,7 +101,7 @@ const WATCH = Array.from(process.argv).includes('--watch');
 class Util {
 
 	/**
-	 * Asynchronously read a file and return its name and contents.
+	 * Asynchronously read a file and return its name, contents, and stat.
 	 *
 	 * @param {string} file The file to read.
 	 * @async
@@ -98,7 +109,8 @@ class Util {
 	static async read_file(file) {
 		return {
 			name: file,
-			contents: await fse.readFile(file, {encoding: 'utf8'})
+			contents: await fse.readFile(file, {encoding: 'utf8'}),
+			stat: await fse.stat(file)
 		}
 	}
 
@@ -133,6 +145,29 @@ class Util {
 	}
 
 	/**
+	 * Asynchronously read the generated CSS file for a card.
+	 *
+	 * @param {string} card The name of the card to read.
+	 * @async
+	 */
+	static async read_card_style(card) {
+		return (await (Util.read_file(path.join(DEST, card, 'Style.css')))).contents;
+	}
+
+	/**
+	 * Asynchronously read the Metadata.json file for a card.
+	 *
+	 * @param {string} card The name of the card to read.
+	 * @async
+	 */
+	static async read_card_metadata(card) {
+		let read = (await (Util.read_file(path.join(__dirname, card, 'Metadata.json'))));
+		return Object.assign({}, JSON.parse(read.contents), {
+			modified: read.stat.mtime.getTime()
+		});
+	}
+
+	/**
 	 * Remove the template tags from generated card HTML.
 	 * This is useful for generating previews.
 	 *
@@ -152,6 +187,100 @@ class Util {
 		}
 
 		return copy;
+	}
+
+	/**
+	 * Generate an Anki2 "model" for a card.
+	 *
+	 * @param {object} metadata The card's Metadata.json file.
+	 * @async
+	 */
+	static anki2_card_model(metadata) {
+		let model = {};
+
+		// Constants.
+
+		const DEFAULT_LATEX_PRE = [
+			"\\documentclass[12pt]{article}",
+			"\\special{papersize=3in,5in}",
+			"\\usepackage[utf8]{inputenc}",
+			"\\usepackage{amssymb,amsmath}",
+			"\\pagestyle{empty}",
+			"\\setlength{\\parindent}{0in}",
+			"\\begin{document}"
+		];
+
+		const DEFAULT_LATEX_POST = [
+			"\\end{document}"
+		];
+
+		// Metadata (Required) -> Model
+		model.id   = metadata.id;
+		model.name = metadata.name;
+		model.mod  = metadata.modified;
+
+		// Metadata (Constant) -> Model
+		model.did   = 0;
+		model.css   = '';
+		model.tmpls = [];
+		model.flds  = [];
+
+		// Metadata (Optional) -> Model
+		model.latexPre = ('latexPre' in metadata ? metadata.latexPre : DEFAULT_LATEX_PRE).join("\n");
+		model.latexPre = ('latexPost' in metadata ? metadata.latexPost : DEFAULT_LATEX_POST).join("\n");
+		model.type     = 'type' in metadata ? metadata.type : 0;
+		model.tags     = 'tags' in metadata ? metadata.tags : [];
+		model.usn      = 'revision' in metadata ? metadata['revision'] : 0;
+		model.req      = 'anki-req' in metadata ? metadata['anki-req'] : [[0, 'all', [0]]];
+		model.sortf    = 'sort-by' in metadata ? metadata['sort-by'] : 0;
+		model.vers     = 'anki-vers' in metadata ? metadata['anki-vers'] : [];
+
+		// Metadata Fields -> Model.flds
+		for (let [entry, field] of Object.entries(metadata.fields)) {
+			model.flds.push({
+				name: field.name,
+				rtl: 'rtl' in field ? field.rtl : false,
+				sticky: 'sticky' in field ? field.sticky : false,
+				media: 'media' in field ? field.media : [],
+				ord: 'anki-ord' in field ? parseInt(field['anki-ord']) : parseInt(entry),
+				font: 'font-family' in field ? field['font-family'] : 'Arial',
+				size: 'font-size' in field ? field['font-size'] : 20
+			})
+		}
+
+		// Return.
+		return model;
+	}
+
+	/**
+	 * Generate an Anki2 "note" for a card.
+	 *
+	 * @param {object} metadata The card's Metadata.json file.
+	 * @async
+	 */
+	static anki2_card_note(metadata) {
+		let note = {};
+
+		// Metadata (Required) -> Model
+		note.id   = metadata.id;
+		note.guid = metadata.name;
+		note.mid  = metadata.id;
+		note.mod  = metadata.modified;
+
+		// Metadata (Optional) -> Model
+		note.usn  = 'revision' in metadata ? metadata['revision'] : 0;
+		note.tags = 'tags' in metadata ? metadata.tags : [];
+
+		note.flds = '<Automatically Generated>' + "\x1F".repeat(metadata.fields.length);
+		note.sfld = '<Automatically Generated>' + "\x1F".repeat(metadata.fields.length);
+
+		// Metadata (Constant) -> Model
+		note.csum  = parseInt(crypto.createHash('sha1').update(note.sfld).digest('hex').substring(0, 8), 16);
+		note.flags = 0;
+		note.data  = 0;
+
+		// Return.
+		return note;
 	}
 
 }
@@ -209,6 +338,124 @@ class Tasks {
 			}));
 	}
 
+	static async package() {
+		// Constants.
+		const COLLECTION_ID            = 301300009000;
+		const COLLECTION_TIME_CREATED  = 1520465137;
+		const COLLECTION_TIME_MODIFIED = Date.now();
+
+		// Read card information.
+		const cards = await Promise.all(CARDS.map((card) => {
+			return (async () => {
+				let promises = {
+					style: Util.read_card_style(card),
+					metadata: Util.read_card_metadata(card),
+					templates: Util.read_card_html(card)
+				};
+
+				let result = {
+					name: card
+				};
+
+				for (let property of Object.getOwnPropertyNames(promises)) {
+					result[property] = await promises[property];
+				}
+
+				return result;
+			})();
+		}));
+
+		// Generate model and notes.
+		let models = {};
+		let notes  = {};
+
+		for (let card of cards) {
+			let model = Util.anki2_card_model(card.metadata);
+			let note  = Util.anki2_card_note(card.metadata);
+
+			model.css   = card.style;
+			model.tmpls = card.templates.map((template, index) => {
+				return {
+					name: `Card ${index}`,
+					bqfmt: "",
+					qfmt: template.front,
+					did: 0,
+					bafmt: "",
+					afmt: template.back,
+					ord: index
+				}
+			});
+
+			models[model.id] = model;
+			notes[note.id]   = note;
+		}
+
+		// Generate tag list.
+		let tags = {};
+		for (let card of cards) {
+			if (card.metadata.tags instanceof Array) {
+				for (let tag of card.metadata.tags) {
+					tags[tag] = true;
+				}
+			}
+		}
+
+		// Generate database.
+		const databaseTemplate = await fse.readFile(path.join(__dirname, 'Anki2.sql'), 'utf8');
+		const databaseFile     = path.join(DEST, 'collection.anki2');
+		const database         = new sqlite3.Database(databaseFile);
+
+		try {
+			await fse.unlink(databaseFile);
+		} catch (ex) {
+		}
+
+		database.serialize(() => {
+			database.exec(databaseTemplate);
+			database.run('INSERT INTO col VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+				COLLECTION_ID,
+				COLLECTION_TIME_CREATED,
+				COLLECTION_TIME_MODIFIED,
+				COLLECTION_TIME_MODIFIED,
+				11, // Schema version.
+				0,
+				0,
+				0,
+				'{}',
+				JSON.stringify(models),
+				'{}',
+				'{}',
+				JSON.stringify(tags)
+			);
+
+			for (let note of Object.values(notes)) {
+				database.run('INSERT INTO notes VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+					note.id,
+					note.guid,
+					note.mid,
+					note.mod,
+					note.usn,
+					JSON.stringify(note.tags),
+					note.flds,
+					note.sfld,
+					note.csum,
+					note.flags,
+					note.data
+				);
+			}
+		});
+
+		await util.promisify(database.close.bind(database))();
+
+		// Generate apkg.
+		let apkg = zip();
+		apkg.file('collection.anki2', await fse.readFile(databaseFile));
+		apkg.file('media', '{}');
+
+		let apkgData = apkg.generate({base64: false, compression: 'DEFLATE'});
+		await fse.writeFile(DEST_PKG, apkgData, 'binary');
+	}
+
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -218,8 +465,12 @@ gulp.task('compile:pug', () => Tasks.compile_pug(SRC_PUG));
 gulp.task('compile:scss', () => Tasks.compile_scss(SRC_SCSS));
 gulp.task('generate:preview', () => Tasks.generate_preview(CARDS, false));
 gulp.task('generate:screenshot', () => Tasks.generate_preview(CARDS, true));
+gulp.task('package', () => Tasks.package());
 
-gulp.task('default', gulp.series(gulp.parallel('compile:pug', 'compile:scss'), 'generate:screenshot'));
+gulp.task('default', gulp.series(
+	gulp.parallel('compile:pug', 'compile:scss'),
+	gulp.parallel('generate:screenshot', 'package')
+));
 
 // ---------------------------------------------------------------------------------------------------------------------
 // Watch:

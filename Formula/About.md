@@ -6,6 +6,7 @@ A flashcard for a formula.
 |Name|Represents|
 |:--|:--|
 |Name|The name of the formula.|
+|Variables|The definition of variables used in the formula.|
 |Formula|The formula, preferably using LaTeX.|
 |Explanation|The explanation of the formula. (Optional)|
 |Proof|The proof of the formula. (Optional)|

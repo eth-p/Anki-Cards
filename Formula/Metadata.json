@@ -1,0 +1,29 @@
+{
+	"id": 301300009004,
+	"name": "Formula",
+	"type": 0,
+
+	"sort-by": 0,
+	"fields": [
+		{
+			"name": "Name",
+			"font-size": 20
+		},
+		{
+			"name": "Variables",
+			"font-size": 13
+		},
+		{
+			"name": "Formula",
+			"font-size": 13
+		},
+		{
+			"name": "Explanation",
+			"font-size": 13
+		},
+		{
+			"name": "Proof",
+			"font-size": 13
+		}
+	]
+}

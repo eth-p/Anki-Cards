@@ -19,11 +19,14 @@
 		"gulp-pug": "^3.3.0",
 		"gulp-sass": "^3.1.0",
 		"gulp-webshot": "^0.2.3",
+		"node-zip": "^1.1.1",
+		"pug": "^2.0.0",
+		"sqlite3": "^3.1.13",
 		"stream-to-promise": "^2.2.0"
 	},
 	"scripts": {
 		"build": "gulp default",
 		"watch": "gulp --watch --continue"
 	},
-	"license": "MIT",
+	"license": "MIT"
 }

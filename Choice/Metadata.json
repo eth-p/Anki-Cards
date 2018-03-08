@@ -1,0 +1,37 @@
+{
+	"id": 301300009002,
+	"name": "Choice",
+	"type": 0,
+
+	"sort-by": 0,
+	"fields": [
+		{
+			"name": "Question",
+			"font-size": 20
+		},
+		{
+			"name": "Correct",
+			"font-size": 20
+		},
+		{
+			"name": "Explanation",
+			"font-size": 13
+		},
+		{
+			"name": "Incorrect_1",
+			"font-size": 13
+		},
+		{
+			"name": "Incorrect_2",
+			"font-size": 13
+		},
+		{
+			"name": "Incorrect_3",
+			"font-size": 13
+		},
+		{
+			"name": "Incorrect_4",
+			"font-size": 13
+		}
+	]
+}

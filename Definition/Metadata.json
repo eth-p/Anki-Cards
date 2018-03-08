@@ -1,0 +1,21 @@
+{
+	"id": 301300009001,
+	"name": "Definition",
+	"type": 0,
+
+	"sort-by": 0,
+	"fields": [
+		{
+			"name": "Term",
+			"font-size": 20
+		},
+		{
+			"name": "Definition",
+			"font-size": 13
+		},
+		{
+			"name": "Reversed",
+			"font-size": 13
+		}
+	]
+}
