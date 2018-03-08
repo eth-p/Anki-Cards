@@ -2,12 +2,12 @@
 A collection of custom-designed Anki note types.
 Click on one of the card types below for explanations and a preview image.
 
-|Type|Explanation|
+|Type|Usage|
 |:--|:--|
-|[Definition](Definition/About.md)|The definition of a term. (Reversible)|
-|[Choice](Choice/About.md)|A multiple choice question.|
+|[Definition](Definition/About.md)|A dictionary or terminology definitions. (Reversible)|
+|[Choice](Choice/About.md)|A choice between one or more randomized options.|
 |[Fact](Fact/About.md)|A fact.|
-|[Formula](Formula/About.md)|A math formulag.|
+|[Formula](Formula/About.md)|A math formula.|
 
 ## Installation
 

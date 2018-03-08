@@ -1,5 +1,5 @@
 # Anki-Cards/Fact
-A flashcard for a fact.
+A flash card for a fact.
 
 ## Fields
 
@@ -7,7 +7,7 @@ A flashcard for a fact.
 |:--|:--|
 |Question|The incomplete fact. Use `<ac-placeholder/>` to put in a placeholder.|
 |Fact|The complete fact.|
-|Explanation|The explanation. (Optional)|
+|Explanation|An explanation of the fact. (Optional)|
 
 ## Preview
 

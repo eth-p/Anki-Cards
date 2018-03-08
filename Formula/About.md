@@ -1,15 +1,15 @@
 # Anki-Cards/Formula
-A flashcard for a formula.
+A flashcard for a mathematical formula.
 
 ## Fields
 
 |Name|Represents|
 |:--|:--|
 |Name|The name of the formula.|
-|Variables|The definition of variables used in the formula.|
+|Variables|A definition of the variables used in the formula.|
 |Formula|The formula, preferably using LaTeX.|
-|Explanation|The explanation of the formula. (Optional)|
-|Proof|The proof of the formula. (Optional)|
+|Explanation|An explanation of the formula. (Optional)|
+|Proof|A proof for the formula. (Optional)|
 
 ## Preview
 
