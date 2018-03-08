@@ -26,12 +26,15 @@ mixin details(name)
 		div.paragraph
 			block
 
-mixin card
+mixin card(options)
 	header
 		layout-columns
-			layout-column.deck
+			layout-column.header-deck
 				span.field= field('Deck')
-			layout-column.type
+			if options && options.header
+				layout-column.header-misc
+					| #{options.header}
+			layout-column.header-type
 				span.field= field('Type')
 	main
 		block

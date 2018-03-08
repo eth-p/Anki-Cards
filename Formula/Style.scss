@@ -19,16 +19,6 @@ $term-color: map-get($primary, 500);
 		color: $term-color;
 	}
 
-	.variables {
-		$size: map-get($text-paragraph, size) - 3px;
-
-		font-size: $size;
-
-		.latex {
-			height: $size;
-		}
-	}
-
 	ac-placeholder::after {
 		color: inherit;
 		content: '_____';

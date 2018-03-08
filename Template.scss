@@ -43,6 +43,13 @@ $text-paragraph: (
 		spacing: 20px,
 );
 
+$text-paragraph-small: (
+		family: null,
+		size: 17px,
+
+		spacing: 20px,
+);
+
 // ---------------------------------------------------------------------------------------------------------------------
 // Import:
 
@@ -143,6 +150,16 @@ $imported-template: false !default;
 			margin: map-get($text-paragraph, spacing) 0;
 		}
 
+		.paragraph.small {
+			font-size: map-get($text-paragraph-small, size);
+			font-family: map-get($text-paragraph-small, family);
+			margin: map-get($text-paragraph-small, spacing) 0;
+
+			.latex {
+				height: map-get($text-paragraph-small, size);
+			}
+		}
+
 		h2 {
 			font-weight: 500;
 			font-size: map-get($text-subheader, size);
@@ -236,13 +253,12 @@ $imported-template: false !default;
 				background: $apple-background;
 				color: $apple-text;
 
-				.deck {
+				layout-column {
 					margin-top: 1px;
-
 					color: $apple-text;
 				}
 
-				.type {
+				.header-type {
 					padding: 0;
 
 					.field {
@@ -250,7 +266,6 @@ $imported-template: false !default;
 
 						display: inline-block;
 
-						margin-top: 1px;
 						margin-right: 2px;
 						padding: ($header-padding) ($header-padding + 1) ($header-padding - 1) ($header-padding + 1);
 						border-radius: 6px;
