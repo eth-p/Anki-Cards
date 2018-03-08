@@ -269,7 +269,7 @@ class Util {
 
 		// Metadata (Optional) -> Model
 		note.usn  = 'revision' in metadata ? metadata['revision'] : 0;
-		note.tags = 'tags' in metadata ? metadata.tags : [];
+		note.tags = '';
 
 		note.flds = '<Automatically Generated>' + "\x1F".repeat(metadata.fields.length - 1);
 		note.sfld = '<Automatically Generated>' + "\x1F".repeat(metadata.fields.length - 1);
@@ -407,6 +407,8 @@ class Tasks {
 			}
 		}
 
+		tags = Object.keys(tags);
+
 		// Generate database.
 		const databaseFile = path.join(DEST, 'collection.anki2');
 
@@ -443,7 +445,7 @@ class Tasks {
 					note.mid,
 					note.mod,
 					note.usn,
-					JSON.stringify(note.tags),
+					note.tags,
 					note.flds,
 					note.sfld,
 					note.csum,
