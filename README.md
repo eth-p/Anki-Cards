@@ -8,6 +8,7 @@ Click on one of the card types below for explanations and a preview image.
 |[Choice](Choice/About.md)|A choice between one or more randomized options.|
 |[Fact](Fact/About.md)|A fact.|
 |[Formula](Formula/About.md)|A math formula.|
+|[Theorem](Theorem/About.md)|A math theorem.|
 
 ## Installation
 

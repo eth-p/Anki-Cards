@@ -1,0 +1,23 @@
+//- --------------------------------------------------------------------------------------------------------------------
+//- Anki-Cards | Copyright (C) 2018 eth-p
+//- --------------------------------------------------------------------------------------------------------------------
+include ../Template
++card
+	div.paragraph
+		div.term= field('Name')
+
+	+if-field-exists('Variables')
+		div.paragraph.variables= field('Variables')
+
+	ac-answer
+		div.paragraph.theorem= field('Theorem')
+
+	ac-details
+
+		+if-field-exists('Explanation')
+			+details('Explanation')
+				div.explanation= field('Explanation')
+
+		+if-field-exists('Proof')
+			+details('Proof')
+				div.proof= field('Proof')

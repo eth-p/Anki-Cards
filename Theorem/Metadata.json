@@ -1,0 +1,33 @@
+{
+	"id": 301300009005,
+	"name": "Theorem",
+	"type": 0,
+
+	"cards": {
+		"1": "Theorem"
+	},
+
+	"sort-by": 0,
+	"fields": [
+		{
+			"name": "Name",
+			"font-size": 20
+		},
+		{
+			"name": "Variables",
+			"font-size": 13
+		},
+		{
+			"name": "Theorem",
+			"font-size": 13
+		},
+		{
+			"name": "Explanation",
+			"font-size": 13
+		},
+		{
+			"name": "Proof",
+			"font-size": 13
+		}
+	]
+}

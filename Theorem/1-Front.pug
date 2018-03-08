@@ -1,0 +1,14 @@
+//- --------------------------------------------------------------------------------------------------------------------
+//- Anki-Cards | Copyright (C) 2018 eth-p
+//- --------------------------------------------------------------------------------------------------------------------
+include ../Template
++card
+	div.paragraph
+		div.term= field('Name')
+
+	ac-question
+		+if-field-exists('Variables')
+			div.paragraph.variables= field('Variables')
+
+		div.paragraph.formula
+			ac-placeholder
