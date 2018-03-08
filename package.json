@@ -1,7 +1,7 @@
 {
 	"name": "anki-cards",
 	"version": "1.0.0",
-	"description": "A collection of custom-designed Anki flashcards.",
+	"description": "A collection of custom-designed Anki note types.",
 	"private": true,
 	"author": "eth-p",
 	"repository": {

@@ -1,5 +1,6 @@
 # Anki-Cards
-A collection of custom-designed Anki flashcards.
+A collection of custom-designed Anki note types.
+Click on one of the card types below for explanations and a preview image.
 
 |Type|Explanation|
 |:--|:--|
@@ -8,6 +9,14 @@ A collection of custom-designed Anki flashcards.
 |[Fact](Fact/About.md)|A fact.|
 |[Formula](Formula/About.md)|A math formulag.|
 
+## Installation
+
+**You must use Anki for Mac/Windows/Linux.**
+
+1. Download `Anki-Cards.apkg` file from the [latest release](https://github.com/eth-p/Anki-Cards/releases/latest).
+2. Using the Anki application, import the `Anki-Cards.apkg` package.
+3. Optimize the Anki database. [(manual)](https://apps.ankiweb.net/docs/manual.html#checking-your-collection)
+4. Congratulations! The note types have been added to your Anki database.
 
 ## Building
 
