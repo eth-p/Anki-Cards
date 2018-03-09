@@ -4,10 +4,11 @@ Click on one of the card types below for explanations and a preview image.
 
 |Type|Usage|
 |:--|:--|
-|[Definition](Definition/About.md)|A dictionary or terminology definitions. (Reversible)|
 |[Choice](Choice/About.md)|A choice between one or more randomized options.|
+|[Definition](Definition/About.md)|A dictionary or terminology definitions. (Reversible)|
 |[Fact](Fact/About.md)|A fact.|
 |[Formula](Formula/About.md)|A math formula.|
+|[Note](Note/About.md)|A plain flash card for notes.|
 |[Theorem](Theorem/About.md)|A math theorem.|
 |[Translation](Translation/About.md)|A translation for a word.|
 
