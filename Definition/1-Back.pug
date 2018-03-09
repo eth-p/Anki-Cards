@@ -3,11 +3,18 @@
 //- --------------------------------------------------------------------------------------------------------------------
 include ../Template
 +card
-	ac-question
-		span.term= field('Term')
-		span &nbsp;is&nbsp;
+	div.paragraph
+		ac-question
+			span.term= field('Term')
+			span &nbsp;is&nbsp;
 
-	ac-answer
-		span.definition
-			= field('Definition')
-			| .
+		ac-answer
+			span.definition
+				= field('Definition')
+				| .
+
+	ac-details
+		+if-field-exists('Details')
+			+details('Details').small
+				div.details= field('Details')
+
