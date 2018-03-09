@@ -13,10 +13,6 @@ $primary: material(#FFC107);
 // Global:
 
 @include template-global($primary) {
-	ac-placeholder::after {
-		color: inherit;
-		content: '_____';
-	}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

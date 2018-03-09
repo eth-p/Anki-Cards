@@ -18,11 +18,6 @@ $term-color: map-get($primary, 500);
 	.term {
 		color: $term-color;
 	}
-
-	ac-placeholder::after {
-		color: inherit;
-		content: '_____';
-	}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

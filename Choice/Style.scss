@@ -16,11 +16,6 @@ $header-text: map-get($primary, text);
 // Global:
 
 @include template-global($primary) {
-	ac-placeholder::after {
-		color: inherit;
-		content: '_____';
-	}
-
 	ac-question > ul {
 		list-style-type: upper-alpha;
 		padding-left: 40px;

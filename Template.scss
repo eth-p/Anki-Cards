@@ -216,6 +216,42 @@ $imported-template: false !default;
 			border-bottom-color: map-get($primary, 900);
 		}
 
+		// Placeholders:
+		ac-placeholder {
+			display: inline-block;
+			position: relative;
+
+			min-width: 40px;
+
+			-webkit-user-select: none;
+			-moz-user-select: none;
+
+			&::before,
+			&::after {
+				display: inline-block;
+				position: absolute;
+				left: 0;
+				bottom: 0;
+				width: 100%;
+				content: '';
+			}
+
+			// Cover the initial text.
+			&::before {
+				height: 100%;
+
+				background: white;
+			}
+
+			// Render a new underline.
+			&::after {
+				bottom: 4px;
+
+				border-bottom: 2px solid;
+				border-bottom: currentColor 2px solid;
+			}
+		}
+
 		// Dividers:
 		hr {
 			border-bottom-color: rgba(#000, 0.12);

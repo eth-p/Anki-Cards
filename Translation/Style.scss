@@ -30,11 +30,6 @@ $translation-color: map-get($primary, 500);
 
 		margin-top: -(map-get($text-paragraph, spacing) / 2) !important;
 	}
-
-	ac-placeholder::after {
-		color: inherit;
-		content: '_____';
-	}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

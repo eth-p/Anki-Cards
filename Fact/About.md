@@ -5,7 +5,7 @@ A flash card for a fact.
 
 |Name|Represents|
 |:--|:--|
-|Question|The incomplete fact. Use `<ac-placeholder/>` to put in a placeholder.|
+|Question|The incomplete fact.|
 |Fact|The complete fact.|
 |Explanation|An explanation of the fact. (Optional)|
 
