@@ -221,6 +221,20 @@ $imported-template: false !default;
 			border-bottom-color: rgba(#000, 0.12);
 		}
 
+		// Highlighting:
+		b > u,
+		u > b {
+			font-weight: normal;
+			//font-style: normal;
+			text-decoration: none;
+
+			@if (map-get($accent, 500) == #000) {
+				color: map-get($primary, 500);
+			} @else {
+				color: map-get($accent, 500);
+			}
+		}
+
 		// Typography:
 		h2 {
 			@if (map-get($accent, 500) == #000) {
