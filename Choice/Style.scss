@@ -28,6 +28,14 @@ $header-text: map-get($primary, text);
 	ac-answer {
 		display: block;
 	}
+
+	ac-question.hidden {
+		display: none;
+
+		&::after {
+			content: 'Shuffling...';
+		}
+	}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

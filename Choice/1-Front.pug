@@ -6,7 +6,7 @@ include ../Template
 	ac-question
 		div.paragraph.question= field('Question')
 
-	ac-question
+	ac-question#choices.hidden
 		ul
 			li.choice= field('Correct')
 			li.choice= field('Incorrect_1')
@@ -21,14 +21,27 @@ include ../Template
 				li.choice= field('Incorrect_4')
 
 	script.
-		var answers = document.querySelectorAll(".card .choice");
-		var parent = answers[0].parentNode;
-		var length = answers.length;
+		function shuffle() {
+			var answers = document.querySelectorAll("#choices .choice");
+			if (answers.length === 0) {
+				setTimeout(shuffle, 1);
+				return;
+			}
 
-		var rand = function () {
-			return Math.floor(Math.random() * length);
-		};
+			var parent  = answers[0].parentNode;
+			var length  = answers.length;
 
-		for (var i = 0; i < answers.length; i++) {
-			parent.insertBefore(answers[rand()], answers[rand()]);
+			var rand = function () {
+				return Math.floor(Math.random() * length);
+			};
+
+			for (var i = 0; i < answers.length; i++) {
+				parent.insertBefore(answers[rand()], answers[rand()]);
+			}
+
+			console.log('ok');
+
+			document.getElementById('choices').classList.remove('hidden');
 		}
+
+		shuffle();
