@@ -1,0 +1,29 @@
+{
+	"id": 301300009006,
+	"name": "Note",
+	"type": 0,
+
+	"cards": {
+		"1": "Note"
+	},
+
+	"sort-by": 0,
+	"fields": [
+		{
+			"name": "Front",
+			"font-size": 13
+		},
+		{
+			"name": "Front Details",
+			"font-size": 13
+		},
+		{
+			"name": "Back",
+			"font-size": 13
+		},
+		{
+			"name": "Back Details",
+			"font-size": 13
+		}
+	]
+}

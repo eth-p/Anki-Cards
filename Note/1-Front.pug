@@ -1,0 +1,11 @@
+//- --------------------------------------------------------------------------------------------------------------------
+//- Anki-Cards | Copyright (C) 2018 eth-p
+//- --------------------------------------------------------------------------------------------------------------------
+include ../Template
++card
+	div.paragraph= field('Front')
+
+	ac-details
+		+if-field-exists('Front Details')
+			+details('Details').small
+				div.details= field('Front Details')
