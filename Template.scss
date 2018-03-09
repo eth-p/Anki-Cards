@@ -217,9 +217,22 @@ $imported-template: false !default;
 		}
 
 		// Placeholders:
-		ac-placeholder {
-			display: inline-block;
+		ac-placeholder:empty {
+			&::after {
+				display: inline-block;
+
+				width: 40px;
+				height: 2px;
+				content: '';
+
+				background: black;
+				background: currentColor;
+			}
+		}
+
+		ac-placeholder:not(:empty) {
 			position: relative;
+			display: inline-block;
 
 			min-width: 40px;
 
@@ -239,15 +252,13 @@ $imported-template: false !default;
 			// Cover the initial text.
 			&::before {
 				height: 100%;
-
 				background: white;
 			}
 
 			// Render a new underline.
 			&::after {
-				bottom: 4px;
-
-				border-bottom: 2px solid;
+				bottom: 20%;
+				border-bottom: -2px solid;
 				border-bottom: currentColor 2px solid;
 			}
 		}
